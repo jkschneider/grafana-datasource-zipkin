@@ -1,4 +1,5 @@
 import { DataQuery, DataSourceJsonData } from '@grafana/ui';
+import { AnnotationEvent } from '@grafana/data';
 
 // http://localhost:9411/api/v2/traces?serviceName=canary-demo&annotationQuery=http.path=/quick
 export interface ZipkinQuery extends DataQuery {
@@ -48,5 +49,11 @@ export interface ZipkinOptions extends DataSourceJsonData {
 export interface ZipkinSpan {
   traceId: string;
   id: string;
+  timestamp: number;
+  duration: number;
   tags: {[key: string]: string};
+}
+
+export interface ZipkinAnnotationEvent extends AnnotationEvent {
+  value: number; // for y-axis plotting
 }

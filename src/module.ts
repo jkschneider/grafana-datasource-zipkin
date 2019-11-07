@@ -1,5 +1,5 @@
 import { ZipkinDatasource } from './datasource';
-import { ZipkinQueryEditor } from './components';
+import { ZipkinAnnotationsQueryCtrl } from './ZipkinAnnotationsQueryCtrl';
 
 class ZipkinConfigCtrl {
   static templateUrl = 'partials/config.html';
@@ -7,6 +7,6 @@ class ZipkinConfigCtrl {
 
 export {
   ZipkinDatasource as Datasource,
-  ZipkinQueryEditor as QueryEditor,
   ZipkinConfigCtrl as ConfigCtrl,
+  ZipkinAnnotationsQueryCtrl as AnnotationsQueryCtrl,
 };

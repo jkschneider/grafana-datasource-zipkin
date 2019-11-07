@@ -1,4 +1,4 @@
-import { AnnotationEvent } from '@grafana/data';
+import { ZipkinAnnotationEvent } from './types';
 
 import {
   AnnotationQueryRequest,
@@ -30,7 +30,7 @@ export class ZipkinDatasource extends DataSourceApi<ZipkinQuery, ZipkinOptions> 
   }
 
   testDatasource() {
-    return this.backendSrv.head(this.url + '/api/v2/traces').then(response => {
+    return this.backendSrv.get(this.url + '/api/v2/traces').then(response => {
       if (response.status === 200) {
         return { status: 'success', message: 'Data source is working', title: 'Success' };
       }
@@ -38,16 +38,20 @@ export class ZipkinDatasource extends DataSourceApi<ZipkinQuery, ZipkinOptions> 
     });
   }
 
-  annotationQuery(options: AnnotationQueryRequest<ZipkinQuery>): Promise<AnnotationEvent[]> {
+  annotationQuery(options: AnnotationQueryRequest<ZipkinQuery>): Promise<ZipkinAnnotationEvent[]> {
+    console.log(options);
     return this.doRequest('/api/v2/traces',
-      `serviceName=${q}`,
+      `serviceName=${options.annotation.serviceName}`,
       `e=${options.range.to.unix()}`)
-      .then((response: ZipkinSpan[][]) => {
-        return response.map(trace =>
-          trace.map(span => ({
-
-          }))
-        );
+      .then((traces: ZipkinSpan[][]) => {
+        return traces.map(trace => {
+          const rootSpan = trace[0];
+          return {
+            id: rootSpan.traceId,
+            time: rootSpan.timestamp,
+            value: rootSpan.duration, // TODO is this cumulative or should we sum over all spans?
+          } as ZipkinAnnotationEvent;
+        });
       })
       .catch(() => Promise.resolve([]));
   }

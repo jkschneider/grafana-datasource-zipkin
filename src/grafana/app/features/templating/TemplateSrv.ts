@@ -1,4 +1,4 @@
-import { ScopedVars } from '@grafana/ui';
+import { ScopedVars } from '@grafana/data';
 
 export interface TemplateSrv {
   replace(target: string, scopedVars?: ScopedVars, format?: string | Function): any;
