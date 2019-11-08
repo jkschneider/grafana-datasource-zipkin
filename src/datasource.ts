@@ -26,20 +26,33 @@ export class ZipkinDatasource extends DataSourceApi<ZipkinQuery, ZipkinOptions> 
     this.url = instanceSettings.jsonData.url;
   }
 
+  static BUCKET_RANGES = [[0.001, 1], [1, 10], [10, 100], [100, 300], [300, 1_000], [1_000, 10_000], [10_000, Infinity]];
+
   queryForTarget = (target: ZipkinQuery, range: TimeRange): Promise<DataFrameDTO> => {
     const rangeTo = range.to.unix() * 1000;
     const rangeFrom = range.from.unix() * 1000;
 
     return Promise.all(
-      [...new Array(10)].map((_,i) => {
-        const queryTo = rangeFrom + (i+1) * (rangeTo - rangeFrom) / 10;
-        return this.doRequest('/api/v2/traces',
-          `serviceName=${target.serviceName}`,
-          `endTs=${queryTo}`,
-          `lookback=${(range.to.unix()-range.from.unix())*1000}`,
-          `limit=${target.limit || 100}`)
-        .catch(() => Promise.resolve([]));
-      })
+      [...new Array(10)].map((_,i) =>
+        Promise.all(
+          ZipkinDatasource.BUCKET_RANGES.map(([minDurationMs, maxDurationMs]) => {
+            const queryTo = rangeFrom + (i+1) * (rangeTo - rangeFrom) / 10;
+            const queryParams = [
+              `serviceName=${target.serviceName}`,
+              `endTs=${queryTo}`,
+              `lookback=${(range.to.unix()-range.from.unix())*1000}`,
+              `minDuration=${minDurationMs * 1000}`,
+              `limit=${target.limit || 100}`
+            ];
+            if (maxDurationMs < Infinity) {
+              queryParams.push(`maxDuration=${maxDurationMs * 1000}`);
+            }
+            return this.doRequest('/api/v2/traces', ...queryParams)
+            .catch(() => Promise.resolve([]));
+          })
+        )
+        .then((listsOfTraces: ZipkinSpan[][][]) => listsOfTraces.reduce((acc, val) => acc.concat(val), []))
+      )
     )
     .then((listsOfTraces: ZipkinSpan[][][]) => {
       const traces = listsOfTraces.reduce((acc, val) => acc.concat(val), []);
@@ -74,4 +87,3 @@ export class ZipkinDatasource extends DataSourceApi<ZipkinQuery, ZipkinOptions> 
     return this.backendSrv.get(this.url + path + (q ? `?${q.join('&')}` : ''));
   }
 }
-
