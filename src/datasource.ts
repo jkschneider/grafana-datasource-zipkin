@@ -1,15 +1,16 @@
-import { ZipkinAnnotationEvent } from './types';
-
 import {
-  AnnotationQueryRequest,
+  DataFrameDTO,
+  TimeRange
+} from '@grafana/data';
+import { BackendSrv } from '@grafana/runtime';
+import {
   DataQueryRequest,
+  DataQueryResponse,
   DataSourceApi,
   DataSourceInstanceSettings,
 } from '@grafana/ui';
 
-import { BackendSrv } from '@grafana/runtime';
-
-import { ZipkinQuery, ZipkinOptions, ZipkinSpan } from './types';
+import { ZipkinQuery, ZipkinOptions, ZipkinSpan, ZipkinTracesField } from './types';
 
 export class ZipkinDatasource extends DataSourceApi<ZipkinQuery, ZipkinOptions> {
   type: string;
@@ -25,8 +26,39 @@ export class ZipkinDatasource extends DataSourceApi<ZipkinQuery, ZipkinOptions> 
     this.url = instanceSettings.jsonData.url;
   }
 
-  query(options: DataQueryRequest<any>): Promise<any> {
-    return Promise.resolve({});
+  queryForTarget = (target: ZipkinQuery, range: TimeRange): Promise<DataFrameDTO> => {
+    const rangeTo = range.to.unix() * 1000;
+    const rangeFrom = range.from.unix() * 1000;
+
+    return Promise.all(
+      [...new Array(10)].map((_,i) => {
+        const queryTo = rangeFrom + (i+1) * (rangeTo - rangeFrom) / 10;
+        return this.doRequest('/api/v2/traces',
+          `serviceName=${target.serviceName}`,
+          `endTs=${queryTo}`,
+          `lookback=${(range.to.unix()-range.from.unix())*1000}`,
+          `limit=${target.limit || 100}`)
+        .catch(() => Promise.resolve([]));
+      })
+    )
+    .then((listsOfTraces: ZipkinSpan[][][]) => {
+      const traces = listsOfTraces.reduce((acc, val) => acc.concat(val), []);
+      return {
+        name: `zipkin-${target.refId}`,
+        fields: [new ZipkinTracesField(this.url, target.refId, traces)],
+        labels: { dataType: 'zipkin' },
+        length: 1,
+      } as DataFrameDTO;
+    });
+  };
+
+  query(options: DataQueryRequest<ZipkinQuery>): Promise<DataQueryResponse> {
+    if (options.targets.length <= 0) {
+      return Promise.resolve({ data: [] });
+    }
+
+    return Promise.all(options.targets.map(target => this.queryForTarget(target, options.range)))
+      .then(dataFrames => ({ data: dataFrames }));
   }
 
   testDatasource() {
@@ -38,48 +70,8 @@ export class ZipkinDatasource extends DataSourceApi<ZipkinQuery, ZipkinOptions> 
     });
   }
 
-  annotationQuery(options: AnnotationQueryRequest<ZipkinQuery>): Promise<ZipkinAnnotationEvent[]> {
-    console.log(options);
-    return this.doRequest('/api/v2/traces',
-      `serviceName=${options.annotation.serviceName}`,
-      `e=${options.range.to.unix()}`)
-      .then((traces: ZipkinSpan[][]) => {
-        return traces.map(trace => {
-          const rootSpan = trace[0];
-          return {
-            id: rootSpan.traceId,
-            time: rootSpan.timestamp,
-            value: rootSpan.duration, // TODO is this cumulative or should we sum over all spans?
-          } as ZipkinAnnotationEvent;
-        });
-      })
-      .catch(() => Promise.resolve([]));
-  }
-
   doRequest(path: string, ...q: string[]) {
     return this.backendSrv.get(this.url + path + (q ? `?${q.join('&')}` : ''));
   }
 }
 
-/*
-export interface AnnotationEvent {
-  id?: string;
-  annotation?: any;
-  dashboardId?: number;
-  panelId?: number;
-  userId?: number;
-  login?: string;
-  email?: string;
-  avatarUrl?: string;
-  time?: number;
-  timeEnd?: number;
-  isRegion?: boolean;
-  title?: string;
-  text?: string;
-  type?: string;
-  tags?: string[];
-
-  // Currently used to merge annotations from alerts and dashboard
-  source?: any; // source.type === 'dashboard'
-}
-*/

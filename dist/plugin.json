@@ -3,9 +3,9 @@
   "name": "Zipkin",
   "id": "zipkin",
   "hiddenQueries": false,
-  "metrics": false,
+  "metrics": true,
   "alerting": false,
-  "annotations": true,
+  "annotations": false,
   "info": {
     "description": "Data source for Zipkin",
     "author": {

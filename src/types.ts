@@ -1,49 +1,16 @@
 import { DataQuery, DataSourceJsonData } from '@grafana/ui';
-import { AnnotationEvent } from '@grafana/data';
+import { FieldDTO, FieldType } from '@grafana/data';
 
 // http://localhost:9411/api/v2/traces?serviceName=canary-demo&annotationQuery=http.path=/quick
 export interface ZipkinQuery extends DataQuery {
   serviceName: string;
-  annotations: ZipkinAnnotation[];
-}
-
-export interface ZipkinAnnotation {
-  key: string;
-  value?: string;
+  annotationQuery: string;
+  limit: number;
 }
 
 export interface ZipkinOptions extends DataSourceJsonData {
   url: string;
 }
-
-/*
-[
-  [
-    {
-      "traceId": "5f189d597c991577",
-      "id": "5f189d597c991577",
-      "kind": "SERVER",
-      "name": "get /quick",
-      "timestamp": 1570737975329018,
-      "duration": 329,
-      "localEndpoint": {
-        "serviceName": "canary-demo",
-        "ipv4": "192.168.99.1"
-      },
-      "remoteEndpoint": {
-        "ipv4": "127.0.0.1",
-        "port": 49361
-      },
-      "tags": {
-        "http.method": "GET",
-        "http.path": "/quick",
-        "mvc.controller.class": "DemoController",
-        "mvc.controller.method": "quick"
-      }
-    }
-  ],
-  ...
-*/
 
 // responses from the Zipkin API
 export interface ZipkinSpan {
@@ -54,6 +21,26 @@ export interface ZipkinSpan {
   tags: {[key: string]: string};
 }
 
-export interface ZipkinAnnotationEvent extends AnnotationEvent {
-  value: number; // for y-axis plotting
+export class ZipkinTraceFieldValue {
+  timestamp: number;
+  duration: number;
+  link: string;
+
+  constructor(zipkinUrl: string, span: ZipkinSpan[]) {
+    const rootSpan = span[0];
+    this.timestamp = rootSpan.timestamp / 1000; // span timestamps are in uS
+    this.duration = rootSpan.duration;
+    this.link = `${zipkinUrl}/zipkin/traces/${rootSpan.traceId}`;
+  }
+}
+
+export class ZipkinTracesField implements FieldDTO<ZipkinTraceFieldValue> {
+  name: string;
+  type = FieldType.other;
+  values: ZipkinTraceFieldValue[];
+
+  constructor(zipkinUrl: string, target: string, traces: ZipkinSpan[][]) {
+    this.name = `zipkin-${target}`;
+    this.values = traces.map(trace => new ZipkinTraceFieldValue(zipkinUrl, trace));
+  }
 }

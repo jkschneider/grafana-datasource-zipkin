@@ -1,4 +1,4 @@
-define(["@grafana/ui"], function(__WEBPACK_EXTERNAL_MODULE__grafana_ui__) { return /******/ (function(modules) { // webpackBootstrap
+define(["@grafana/data","@grafana/ui","react"], function(__WEBPACK_EXTERNAL_MODULE__grafana_data__, __WEBPACK_EXTERNAL_MODULE__grafana_ui__, __WEBPACK_EXTERNAL_MODULE_react__) { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -98,15 +98,27 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
-/***/ "./ZipkinAnnotationsQueryCtrl.ts":
-/*!***************************************!*\
-  !*** ./ZipkinAnnotationsQueryCtrl.ts ***!
-  \***************************************/
-/*! exports provided: ZipkinAnnotationsQueryCtrl */
+/***/ "./components/ZipkinQueryEditor.tsx":
+/*!******************************************!*\
+  !*** ./components/ZipkinQueryEditor.tsx ***!
+  \******************************************/
+/*! exports provided: ZipkinQueryEditor */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ZipkinAnnotationsQueryCtrl\", function() { return ZipkinAnnotationsQueryCtrl; });\nvar ZipkinAnnotationsQueryCtrl =\n/** @class */\nfunction () {\n  /** @ngInject */\n  function ZipkinAnnotationsQueryCtrl() {\n    this.annotation.target = this.annotation.target || {};\n  }\n\n  ZipkinAnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html';\n  return ZipkinAnnotationsQueryCtrl;\n}();\n\n\n\n//# sourceURL=webpack:///./ZipkinAnnotationsQueryCtrl.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ZipkinQueryEditor\", function() { return ZipkinQueryEditor; });\n/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ \"../node_modules/tslib/tslib.es6.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @grafana/ui */ \"@grafana/ui\");\n/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__);\n\n\n\nvar ZipkinQueryEditor = function ZipkinQueryEditor(props) {\n  var query = props.query,\n      onRunQuery = props.onRunQuery,\n      onChange = props.onChange;\n\n  var _a = tslib__WEBPACK_IMPORTED_MODULE_0__[\"__read\"](Object(react__WEBPACK_IMPORTED_MODULE_1__[\"useState\"])(query.serviceName || ''), 2),\n      serviceName = _a[0],\n      setServiceName = _a[1];\n\n  var _b = tslib__WEBPACK_IMPORTED_MODULE_0__[\"__read\"](Object(react__WEBPACK_IMPORTED_MODULE_1__[\"useState\"])(query.annotationQuery || ''), 2),\n      annotationQuery = _b[0],\n      setAnnotationQuery = _b[1];\n\n  var _c = tslib__WEBPACK_IMPORTED_MODULE_0__[\"__read\"](Object(react__WEBPACK_IMPORTED_MODULE_1__[\"useState\"])(query.limit || 100), 2),\n      limit = _c[0],\n      setLimit = _c[1];\n\n  var executeOnChangeAndRunQueries = function executeOnChangeAndRunQueries() {\n    onChange(tslib__WEBPACK_IMPORTED_MODULE_0__[\"__assign\"]({}, query, {\n      serviceName: serviceName,\n      annotationQuery: annotationQuery\n    }));\n    onRunQuery();\n  };\n\n  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"div\", {\n    className: \"gf-form-group\"\n  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"div\", {\n    className: \"gf-form-inline\"\n  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"div\", {\n    className: \"gf-form\"\n  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__[\"FormLabel\"], {\n    width: 7\n  }, \"Service name\"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__[\"Input\"], {\n    value: serviceName,\n    onChange: function onChange(e) {\n      return setServiceName(e.target.value);\n    },\n    onBlur: executeOnChangeAndRunQueries\n  }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"div\", {\n    className: \"gf-form-inline\"\n  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"div\", {\n    className: \"gf-form\"\n  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__[\"FormLabel\"], {\n    width: 7\n  }, \"Tags\"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__[\"Input\"], {\n    value: annotationQuery,\n    placeholder: \"http.uri=/foo and retried\",\n    onChange: function onChange(e) {\n      return setAnnotationQuery(e.target.value);\n    },\n    onBlur: executeOnChangeAndRunQueries\n  }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"div\", {\n    className: \"gf-form-inline\"\n  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"div\", {\n    className: \"gf-form\"\n  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__[\"FormLabel\"], {\n    width: 7\n  }, \"Limit\"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__[\"Input\"], {\n    value: limit,\n    placeholder: \"100\",\n    onChange: function onChange(e) {\n      return setLimit(parseInt(e.target.value, 10));\n    },\n    onBlur: executeOnChangeAndRunQueries\n  }))));\n};\n\n//# sourceURL=webpack:///./components/ZipkinQueryEditor.tsx?");
+
+/***/ }),
+
+/***/ "./components/index.ts":
+/*!*****************************!*\
+  !*** ./components/index.ts ***!
+  \*****************************/
+/*! exports provided: ZipkinQueryEditor */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _ZipkinQueryEditor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ZipkinQueryEditor */ \"./components/ZipkinQueryEditor.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"ZipkinQueryEditor\", function() { return _ZipkinQueryEditor__WEBPACK_IMPORTED_MODULE_0__[\"ZipkinQueryEditor\"]; });\n\n\n\n//# sourceURL=webpack:///./components/index.ts?");
 
 /***/ }),
 
@@ -118,7 +130,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ZipkinDatasource\", function() { return ZipkinDatasource; });\n/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ \"../node_modules/tslib/tslib.es6.js\");\n/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @grafana/ui */ \"@grafana/ui\");\n/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_grafana_ui__WEBPACK_IMPORTED_MODULE_1__);\n\n\n\nvar ZipkinDatasource =\n/** @class */\nfunction (_super) {\n  tslib__WEBPACK_IMPORTED_MODULE_0__[\"__extends\"](ZipkinDatasource, _super);\n  /** @ngInject */\n\n\n  function ZipkinDatasource(instanceSettings, backendSrv) {\n    var _this = _super.call(this, instanceSettings) || this;\n\n    _this.backendSrv = backendSrv;\n    _this.type = 'Zipkin';\n    _this.url = instanceSettings.jsonData.url;\n    return _this;\n  }\n\n  ZipkinDatasource.prototype.query = function (options) {\n    return Promise.resolve({});\n  };\n\n  ZipkinDatasource.prototype.testDatasource = function () {\n    return this.backendSrv.get(this.url + '/api/v2/traces').then(function (response) {\n      if (response.status === 200) {\n        return {\n          status: 'success',\n          message: 'Data source is working',\n          title: 'Success'\n        };\n      }\n\n      return {\n        status: 'error',\n        message: response.error\n      };\n    });\n  };\n\n  ZipkinDatasource.prototype.annotationQuery = function (options) {\n    console.log(options);\n    return this.doRequest('/api/v2/traces', \"serviceName=\" + options.annotation.serviceName, \"e=\" + options.range.to.unix()).then(function (traces) {\n      return traces.map(function (trace) {\n        var rootSpan = trace[0];\n        return {\n          id: rootSpan.traceId,\n          time: rootSpan.timestamp,\n          value: rootSpan.duration\n        };\n      });\n    }).catch(function () {\n      return Promise.resolve([]);\n    });\n  };\n\n  ZipkinDatasource.prototype.doRequest = function (path) {\n    var q = [];\n\n    for (var _i = 1; _i < arguments.length; _i++) {\n      q[_i - 1] = arguments[_i];\n    }\n\n    return this.backendSrv.get(this.url + path + (q ? \"?\" + q.join('&') : ''));\n  };\n\n  return ZipkinDatasource;\n}(_grafana_ui__WEBPACK_IMPORTED_MODULE_1__[\"DataSourceApi\"]);\n\n\n/*\nexport interface AnnotationEvent {\n  id?: string;\n  annotation?: any;\n  dashboardId?: number;\n  panelId?: number;\n  userId?: number;\n  login?: string;\n  email?: string;\n  avatarUrl?: string;\n  time?: number;\n  timeEnd?: number;\n  isRegion?: boolean;\n  title?: string;\n  text?: string;\n  type?: string;\n  tags?: string[];\n\n  // Currently used to merge annotations from alerts and dashboard\n  source?: any; // source.type === 'dashboard'\n}\n*/\n\n//# sourceURL=webpack:///./datasource.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ZipkinDatasource\", function() { return ZipkinDatasource; });\n/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ \"../node_modules/tslib/tslib.es6.js\");\n/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @grafana/ui */ \"@grafana/ui\");\n/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_grafana_ui__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ \"./types.ts\");\n\n\n\n\nvar ZipkinDatasource =\n/** @class */\nfunction (_super) {\n  tslib__WEBPACK_IMPORTED_MODULE_0__[\"__extends\"](ZipkinDatasource, _super);\n  /** @ngInject */\n\n\n  function ZipkinDatasource(instanceSettings, backendSrv) {\n    var _this = _super.call(this, instanceSettings) || this;\n\n    _this.backendSrv = backendSrv;\n\n    _this.queryForTarget = function (target, range) {\n      var rangeTo = range.to.unix() * 1000;\n      var rangeFrom = range.from.unix() * 1000;\n      return Promise.all(tslib__WEBPACK_IMPORTED_MODULE_0__[\"__spread\"](new Array(10)).map(function (_, i) {\n        var queryTo = rangeFrom + (i + 1) * (rangeTo - rangeFrom) / 10;\n        return _this.doRequest('/api/v2/traces', \"serviceName=\" + target.serviceName, \"endTs=\" + queryTo, \"lookback=\" + (range.to.unix() - range.from.unix()) * 1000, \"limit=\" + (target.limit || 100)).catch(function () {\n          return Promise.resolve([]);\n        });\n      })).then(function (listsOfTraces) {\n        var traces = listsOfTraces.reduce(function (acc, val) {\n          return acc.concat(val);\n        }, []);\n        return {\n          name: \"zipkin-\" + target.refId,\n          fields: [new _types__WEBPACK_IMPORTED_MODULE_2__[\"ZipkinTracesField\"](_this.url, target.refId, traces)],\n          labels: {\n            dataType: 'zipkin'\n          },\n          length: 1\n        };\n      });\n    };\n\n    _this.type = 'Zipkin';\n    _this.url = instanceSettings.jsonData.url;\n    return _this;\n  }\n\n  ZipkinDatasource.prototype.query = function (options) {\n    var _this = this;\n\n    if (options.targets.length <= 0) {\n      return Promise.resolve({\n        data: []\n      });\n    }\n\n    return Promise.all(options.targets.map(function (target) {\n      return _this.queryForTarget(target, options.range);\n    })).then(function (dataFrames) {\n      return {\n        data: dataFrames\n      };\n    });\n  };\n\n  ZipkinDatasource.prototype.testDatasource = function () {\n    return this.backendSrv.get(this.url + '/api/v2/traces').then(function (response) {\n      if (response.status === 200) {\n        return {\n          status: 'success',\n          message: 'Data source is working',\n          title: 'Success'\n        };\n      }\n\n      return {\n        status: 'error',\n        message: response.error\n      };\n    });\n  };\n\n  ZipkinDatasource.prototype.doRequest = function (path) {\n    var q = [];\n\n    for (var _i = 1; _i < arguments.length; _i++) {\n      q[_i - 1] = arguments[_i];\n    }\n\n    return this.backendSrv.get(this.url + path + (q ? \"?\" + q.join('&') : ''));\n  };\n\n  return ZipkinDatasource;\n}(_grafana_ui__WEBPACK_IMPORTED_MODULE_1__[\"DataSourceApi\"]);\n\n\n\n//# sourceURL=webpack:///./datasource.ts?");
 
 /***/ }),
 
@@ -126,11 +138,34 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /*!*******************!*\
   !*** ./module.ts ***!
   \*******************/
-/*! exports provided: Datasource, ConfigCtrl, AnnotationsQueryCtrl */
+/*! exports provided: Datasource, QueryEditor, ConfigCtrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ConfigCtrl\", function() { return ZipkinConfigCtrl; });\n/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./datasource */ \"./datasource.ts\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Datasource\", function() { return _datasource__WEBPACK_IMPORTED_MODULE_0__[\"ZipkinDatasource\"]; });\n\n/* harmony import */ var _ZipkinAnnotationsQueryCtrl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ZipkinAnnotationsQueryCtrl */ \"./ZipkinAnnotationsQueryCtrl.ts\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"AnnotationsQueryCtrl\", function() { return _ZipkinAnnotationsQueryCtrl__WEBPACK_IMPORTED_MODULE_1__[\"ZipkinAnnotationsQueryCtrl\"]; });\n\n\n\n\nvar ZipkinConfigCtrl =\n/** @class */\nfunction () {\n  function ZipkinConfigCtrl() {}\n\n  ZipkinConfigCtrl.templateUrl = 'partials/config.html';\n  return ZipkinConfigCtrl;\n}();\n\n\n\n//# sourceURL=webpack:///./module.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ConfigCtrl\", function() { return ZipkinConfigCtrl; });\n/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./datasource */ \"./datasource.ts\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Datasource\", function() { return _datasource__WEBPACK_IMPORTED_MODULE_0__[\"ZipkinDatasource\"]; });\n\n/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components */ \"./components/index.ts\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"QueryEditor\", function() { return _components__WEBPACK_IMPORTED_MODULE_1__[\"ZipkinQueryEditor\"]; });\n\n\n\n\nvar ZipkinConfigCtrl =\n/** @class */\nfunction () {\n  function ZipkinConfigCtrl() {}\n\n  ZipkinConfigCtrl.templateUrl = 'partials/config.html';\n  return ZipkinConfigCtrl;\n}();\n\n\n\n//# sourceURL=webpack:///./module.ts?");
+
+/***/ }),
+
+/***/ "./types.ts":
+/*!******************!*\
+  !*** ./types.ts ***!
+  \******************/
+/*! exports provided: ZipkinTraceFieldValue, ZipkinTracesField */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ZipkinTraceFieldValue\", function() { return ZipkinTraceFieldValue; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ZipkinTracesField\", function() { return ZipkinTracesField; });\n/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @grafana/data */ \"@grafana/data\");\n/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_grafana_data__WEBPACK_IMPORTED_MODULE_0__);\n\n\nvar ZipkinTraceFieldValue =\n/** @class */\nfunction () {\n  function ZipkinTraceFieldValue(zipkinUrl, span) {\n    var rootSpan = span[0];\n    this.timestamp = rootSpan.timestamp / 1000; // span timestamps are in uS\n\n    this.duration = rootSpan.duration;\n    this.link = zipkinUrl + \"/zipkin/traces/\" + rootSpan.traceId;\n  }\n\n  return ZipkinTraceFieldValue;\n}();\n\n\n\nvar ZipkinTracesField =\n/** @class */\nfunction () {\n  function ZipkinTracesField(zipkinUrl, target, traces) {\n    this.type = _grafana_data__WEBPACK_IMPORTED_MODULE_0__[\"FieldType\"].other;\n    this.name = \"zipkin-\" + target;\n    this.values = traces.map(function (trace) {\n      return new ZipkinTraceFieldValue(zipkinUrl, trace);\n    });\n  }\n\n  return ZipkinTracesField;\n}();\n\n\n\n//# sourceURL=webpack:///./types.ts?");
+
+/***/ }),
+
+/***/ "@grafana/data":
+/*!********************************!*\
+  !*** external "@grafana/data" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_data__;\n\n//# sourceURL=webpack:///external_%22@grafana/data%22?");
 
 /***/ }),
 
@@ -142,6 +177,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, exports) {
 
 eval("module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_ui__;\n\n//# sourceURL=webpack:///external_%22@grafana/ui%22?");
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "react" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = __WEBPACK_EXTERNAL_MODULE_react__;\n\n//# sourceURL=webpack:///external_%22react%22?");
 
 /***/ })
 
