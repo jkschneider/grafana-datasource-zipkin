@@ -23,13 +23,13 @@ export interface ZipkinSpan {
 
 export class ZipkinTraceFieldValue {
   timestamp: number;
-  duration: number;
+  durationSeconds: number;
   link: string;
 
   constructor(zipkinUrl: string, span: ZipkinSpan[]) {
     const rootSpan = span[0];
     this.timestamp = rootSpan.timestamp / 1000; // span timestamps are in uS
-    this.duration = rootSpan.duration;
+    this.durationSeconds = rootSpan.duration / 1000 / 1000; // span durations are in uS
     this.link = `${zipkinUrl}/zipkin/traces/${rootSpan.traceId}`;
   }
 }
